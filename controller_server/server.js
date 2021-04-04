@@ -1,19 +1,26 @@
 const fs = require('fs');
-const https = require('https');
 const app = require('express')();
+const https = require('https');
+
 const server = https.createServer(
   {
     key: fs.readFileSync(`${__dirname}/key.pem`, 'utf8'),
     cert: fs.readFileSync(`${__dirname}/cert.pem`, 'utf8'),
+    requestCert: false,
+    rejectUnauthorized: false,
   },
   app
 );
+server.listen(6767, () => {
+  console.log('Https server running ');
+});
+
+const io = require('socket.io').listen(server);
+
 const dgram = require('dgram');
 const wait = require('waait');
-const io = require('socket.io')(https);
 const throttle = require('lodash/throttle');
 const commandDelays = require('./commandDelays');
-
 const PORT = 8889;
 const HOST = '192.168.10.1';
 const drone = dgram.createSocket('udp4');
@@ -29,14 +36,18 @@ function parseState(state) {
     }, {});
 }
 
+function formatMessage(string) {
+  return string.replace(/(\b[a-z](?!\s))/g, (x) => x.toUpperCase());
+}
+
 const droneState = dgram.createSocket('udp4');
 droneState.bind(8890);
 
 drone.send('command', 0, 7, PORT, HOST, handleError);
 
 drone.on('message', (message) => {
-  console.log(`🚁 : ${message}`);
-  io.sockets.emit('status', message.toString());
+  console.log(`Drone Response: ${formatMessage(message)}`);
+  io.sockets.emit('status', formatMessage(message.toString()));
 });
 
 function handleError(err) {
@@ -46,10 +57,9 @@ function handleError(err) {
   }
 }
 
-io.on('connection', (socket) => {
+io.sockets.on('connection', function (socket) {
   socket.on('command', (command) => {
-    console.log('command Sent from browser');
-    console.log(command);
+    console.log(formatMessage(command));
     drone.send(command, 0, command.length, PORT, HOST, handleError);
   });
 
@@ -63,11 +73,3 @@ droneState.on(
     io.sockets.emit('dronestate', formattedState);
   }, 100)
 );
-
-app.get('*', () => {
-  console.log('Server Pinged');
-});
-
-server.listen(6767, () => {
-  console.log('Socket io server up and running');
-});

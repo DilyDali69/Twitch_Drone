@@ -10,24 +10,26 @@ const CommandGrid = styled.div`
   button {
     text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.05);
     border: 0;
-    background: #64485c;
+    background: #744ab2;
     border: 4px solid transparent;
-    color: white;
+    color: #151515;
     font-size: 1rem;
+    font-weight: 600;
     position: relative;
     &:active {
       top: 2px;
     }
     &:focus {
       outline: 0;
-      border-color: #00ffff;
+      border-color: #00f9d8;
     }
     &.takeoff {
-      background: #adadad;
-      color: black;
+      background: #261d35;
+      color: #e4e4e6;
     }
     &.land {
-      background: #83677b;
+      background: #41315b;
+      color: #e4e4e6;
     }
     &.emergency {
       background: black;
@@ -35,17 +37,25 @@ const CommandGrid = styled.div`
       color: red;
     }
     &.rotate {
-      background: #501b1d;
-      color: white;
+      background: #261d35;
+      color: #e4e4e6;
     }
     &.height {
-      background: #adadad;
-      color: black;
+      background: #41315b;
+      color: #e4e4e6;
+    }
+    &:hover {
+      box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
     }
     span.symbol {
       display: block;
       font-size: 2rem;
       font-weight: 400;
+    }
+    &:disabled {
+      background: #a66bffab;
+      color: grey;
+      box-shadow: none;
     }
   }
   .center {
@@ -58,7 +68,7 @@ const CommandGrid = styled.div`
   }
   h2 {
     grid-column: 1 / -1;
-    background: #2e1114;
+    background: #18181b;
     margin: 0;
     font-size: 1rem;
     text-align: center;
@@ -118,9 +128,11 @@ const Commands = () => (
     <button onClick={sendCommand('flip r')}>Flip Right</button>
     <button onClick={sendCommand('flip b')}>Flip Back</button>
     <button onClick={sendCommand('flip f')}>Flip Forward</button>
-    <button onClick={sendCommand('go 25 25 25 25')}>Go 25 25 25 25</button>
-    <button onClick={sendCommand('curve 100 100 100 150 250 350 50')}>
-      Curve!
+    <button disabled onClick={sendCommand('go 25 25 25 25')}>
+      Go 25 25 25 25
+    </button>
+    <button disabled onClick={sendCommand('curve 100 100 100 150 250 350 50')}>
+      Curve
     </button>
   </CommandGrid>
 );

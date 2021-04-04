@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import droneImage from '../static/drone.png'
+import droneImage from '../static/drone.png';
 
 const TiltWrap = styled.div`
   perspective: 500px;
@@ -12,7 +12,7 @@ const TiltWrap = styled.div`
   grid-gap: 5px;
   grid-template-columns: repeat(4, 1fr);
   span {
-    background: #501b1d;
+    background: #3e3e40;
   }
 `;
 const TiltStyles = styled.div`
@@ -21,21 +21,20 @@ const TiltStyles = styled.div`
   background-size: contain;
   background-position: center;
   height: 200px;
-  /* transition: all 0.2s; */
-  color: white;
-  transform: rotateX(${props => props.pitch}deg)
-    rotate(${props => props.yaw * -1}deg)
-    rotateY(${props => props.roll * -1}deg);
+  color: #787879;
+  transform: rotateX(${(props) => props.pitch}deg)
+    rotate(${(props) => props.yaw * -1}deg)
+    rotateY(${(props) => props.roll * -1}deg);
   position: relative;
   grid-column: 1 / -1;
 `;
 
 const Tilt = ({ pitch, roll, yaw, height }) => (
   <TiltWrap>
-    <span>Pitch: {pitch}</span>
-    <span>Roll: {roll}</span>
-    <span>Yaw: {yaw}</span>
-    <span>Height: {height / 100}M</span>
+    <span>PCH: {pitch}</span>
+    <span>YAW: {yaw}</span>
+    <span>RL: {roll}</span>
+    <span>HT: {height / 100}M</span>
     <TiltStyles pitch={pitch} roll={roll} yaw={yaw} />
   </TiltWrap>
 );

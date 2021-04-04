@@ -1,27 +1,31 @@
 import React from 'react';
+import styled, { createGlobalStyle } from 'styled-components';
+import TwitchFont from './fonts/twitch_font.woff2';
 import DroneState from '../src/components/DroneState';
 import Commands from '../src/components/Commands';
 
-import styled, { createGlobalStyle } from 'styled-components';
-
 const GlobalStyle = createGlobalStyle`
+  html, body, #root{
+    font-family: "Inter", "system-ui";
+    background: #0E0E10;
+  }
   body {
-    background: white;
-    /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; */
-    font-family: 'Operator Mono', monospace;
     font-weight: 900;
     font-size: 1rem;
-    background:#fff;
     color: white;
   }
   * {
-    font-family: 'Operator Mono', monospace;
     box-sizing: border-box;
   }
   h2 {
     text-align: center;
-    font-style: italic;
-    color: black
+    color: white
+  }
+  #user {
+    font-weight: 600;
+    background: #e4e4e6;
+    color: #323239;
+    padding: 2px;
   }
 `;
 
@@ -32,7 +36,9 @@ const PageStyles = styled.div`
 
 const IndexPage = () => (
   <PageStyles>
-    <h2>Tello Controller</h2>
+    <h2>
+      Current pilot: <span id="user">@twitchuser</span>
+    </h2>
     <GlobalStyle />
     <Commands />
     <DroneState />
